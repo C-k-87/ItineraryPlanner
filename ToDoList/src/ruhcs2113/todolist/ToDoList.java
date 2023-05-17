@@ -5,6 +5,8 @@
 package ruhcs2113.todolist;
 
 import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -13,16 +15,31 @@ import javax.swing.table.DefaultTableModel;
 public class ToDoList extends javax.swing.JFrame {
 
     DefaultTableModel model;
-    public double currentTotal;
+    public int IDCounter;
     
     
     public ToDoList() {
         initComponents();
-        
-        currentTotal = 0;
         model = (DefaultTableModel) tableTaskTable.getModel();
         
-        calculateBudget();
+        Connect d = new Connect();
+        ResultSet rs = d.initialize();
+        
+        try {
+            while(rs.next()) {
+                int id = rs.getInt("task_id");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                double budget = rs.getDouble("budget");
+                String category = rs.getString("category");
+                model.insertRow(model.getRowCount(), new Object[]{id,title,description,budget,category});
+            }
+        } catch (SQLException ex) {
+            System.err.println("Table entry failed. Clear and try again.");
+        }
+        
+        IDCounter = ((int) tableTaskTable.getValueAt(model.getRowCount()-1, 0))+1;
+        System.out.println("Initial ID Counter: "+IDCounter);
     }
 
     /**
@@ -34,7 +51,7 @@ public class ToDoList extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        panelContainer = new javax.swing.JPanel();
         panelAddTask = new javax.swing.JPanel();
         labelTaskTitle = new javax.swing.JLabel();
         fieldTaskTitle = new javax.swing.JTextField();
@@ -45,16 +62,15 @@ public class ToDoList extends javax.swing.JFrame {
         btnTaskAdd = new javax.swing.JButton();
         btnTaskClear = new javax.swing.JButton();
         txtTaskStatus = new javax.swing.JLabel();
-        txtBudget = new javax.swing.JLabel();
         labelTaskCategory = new javax.swing.JLabel();
         fieldTaskCategory = new javax.swing.JComboBox<>();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        panelTable = new javax.swing.JScrollPane();
         tableTaskTable = new javax.swing.JTable();
         btnTaskDone = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(254, 254, 254));
+        panelContainer.setBackground(new java.awt.Color(254, 254, 254));
 
         panelAddTask.setBackground(new java.awt.Color(171, 171, 171));
         panelAddTask.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Insert Task", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(1, 1, 1))); // NOI18N
@@ -87,10 +103,6 @@ public class ToDoList extends javax.swing.JFrame {
         txtTaskStatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtTaskStatus.setText("Enter task");
 
-        txtBudget.setForeground(new java.awt.Color(1, 1, 1));
-        txtBudget.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        txtBudget.setText("Total : ");
-
         labelTaskCategory.setForeground(new java.awt.Color(1, 1, 1));
         labelTaskCategory.setText("Category");
 
@@ -122,13 +134,13 @@ public class ToDoList extends javax.swing.JFrame {
                                 .addGap(41, 41, 41)
                                 .addGroup(panelAddTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(panelAddTaskLayout.createSequentialGroup()
-                                        .addGap(61, 61, 61)
-                                        .addComponent(txtTaskStatus))
-                                    .addGroup(panelAddTaskLayout.createSequentialGroup()
                                         .addComponent(btnTaskAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(55, 55, 55)
-                                        .addComponent(btnTaskClear, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                                        .addComponent(btnTaskClear, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(panelAddTaskLayout.createSequentialGroup()
+                                        .addGap(61, 61, 61)
+                                        .addComponent(txtTaskStatus)))))
+                        .addGap(0, 45, Short.MAX_VALUE))
                     .addGroup(panelAddTaskLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(panelAddTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,20 +148,16 @@ public class ToDoList extends javax.swing.JFrame {
                             .addComponent(fieldTaskBudget, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(fieldTaskDescription, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(fieldTaskTitle, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAddTaskLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(txtBudget, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(panelAddTaskLayout.createSequentialGroup()
                                 .addGap(14, 14, 14)
                                 .addComponent(labelTaskCategory)
-                                .addGap(0, 187, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         panelAddTaskLayout.setVerticalGroup(
             panelAddTaskLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelAddTaskLayout.createSequentialGroup()
-                .addComponent(txtBudget)
-                .addGap(5, 5, 5)
+                .addGap(21, 21, 21)
                 .addComponent(labelTaskTitle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(fieldTaskTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -180,10 +188,21 @@ public class ToDoList extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title", "Description", "Budget", "Category"
+                "ID", "Title", "Description", "Budget", "Category"
             }
-        ));
-        jScrollPane1.setViewportView(tableTaskTable);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        panelTable.setViewportView(tableTaskTable);
+        if (tableTaskTable.getColumnModel().getColumnCount() > 0) {
+            tableTaskTable.getColumnModel().getColumn(0).setResizable(false);
+        }
 
         btnTaskDone.setText("Mark Done");
         btnTaskDone.addActionListener(new java.awt.event.ActionListener() {
@@ -192,27 +211,27 @@ public class ToDoList extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelContainerLayout = new javax.swing.GroupLayout(panelContainer);
+        panelContainer.setLayout(panelContainerLayout);
+        panelContainerLayout.setHorizontalGroup(
+            panelContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelContainerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelAddTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                .addGroup(panelContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelTable, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
                     .addComponent(btnTaskDone, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        panelContainerLayout.setVerticalGroup(
+            panelContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelContainerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelAddTask, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(panelContainerLayout.createSequentialGroup()
+                        .addComponent(panelTable, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnTaskDone)))
                 .addContainerGap())
@@ -222,11 +241,11 @@ public class ToDoList extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelContainer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -240,27 +259,36 @@ public class ToDoList extends javax.swing.JFrame {
     
     private void removeTask() {
         if (tableTaskTable.getSelectedRowCount() == 1) {
+            Connect d = new Connect();
+            
+            int removeID = (int) tableTaskTable.getValueAt(tableTaskTable.getSelectedRow(), 0);
             model.removeRow(tableTaskTable.getSelectedRow());
+            
+            txtTaskStatus.setText("Removed");
+            
+            d.removeTask(removeID);
         }
-    }
-    
-    private void calculateBudget() {
-        double total = 0;
-        for (int i = 0 ; i < model.getRowCount() ; i++) {
-            total += Double.parseDouble((String) model.getValueAt(i, 2));
-        }
-        
-        currentTotal = total;
-        txtBudget.setText("Budget: "+currentTotal);
     }
     
     private void btnTaskAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaskAddActionPerformed
         try {
-            Double.parseDouble(fieldTaskBudget.getText());
-            model.insertRow(model.getRowCount(), new Object[]{fieldTaskTitle.getText(),fieldTaskDescription.getText(),fieldTaskBudget.getText(),fieldTaskCategory.getSelectedItem()});
+            int id = IDCounter;
+            String title = fieldTaskTitle.getText();
+            String description = fieldTaskDescription.getText();
+            String budget = fieldTaskBudget.getText();
+            Object category = fieldTaskCategory.getSelectedItem();
+            Connect d = new Connect();
+            
+            double budgetValue = Double.parseDouble(budget);
+            
+            model.insertRow(model.getRowCount(), new Object[]{id,title,description,budget,category});
             clearFields();
+            
             txtTaskStatus.setText("Added");
-            calculateBudget();
+            
+            d.addTask(id ,title, description, budgetValue, (String)category);
+            IDCounter++;
+            
         }catch (NumberFormatException e) {
             txtTaskStatus.setText("Invalid budget");
         }
@@ -325,15 +353,14 @@ public class ToDoList extends javax.swing.JFrame {
     public javax.swing.JComboBox<String> fieldTaskCategory;
     public javax.swing.JTextField fieldTaskDescription;
     public javax.swing.JTextField fieldTaskTitle;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelTaskBudget;
     private javax.swing.JLabel labelTaskCategory;
     private javax.swing.JLabel labelTaskDescription;
     private javax.swing.JLabel labelTaskTitle;
     private javax.swing.JPanel panelAddTask;
+    private javax.swing.JPanel panelContainer;
+    private javax.swing.JScrollPane panelTable;
     public javax.swing.JTable tableTaskTable;
-    public javax.swing.JLabel txtBudget;
     public javax.swing.JLabel txtTaskStatus;
     // End of variables declaration//GEN-END:variables
 }
