@@ -38,7 +38,12 @@ public class ToDoList extends javax.swing.JFrame {
             System.err.println("Table entry failed. Clear and try again.");
         }
         
-        IDCounter = ((int) tableTaskTable.getValueAt(model.getRowCount()-1, 0))+1;
+        try {
+            IDCounter = ((int) tableTaskTable.getValueAt(model.getRowCount() - 1, 0)) + 1;
+        } catch (Exception ArrayIndexOutOfBoundsException) {
+            System.out.println("Empty table");
+            IDCounter = 1;
+        }
         System.out.println("Initial ID Counter: "+IDCounter);
     }
 
