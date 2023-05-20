@@ -11,6 +11,7 @@ import org.jfree.data.category.*;
 import org.jfree.data.general.DefaultPieDataset;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JLayeredPane;
 import ruhcs2113.Connect;
 import ruhcs2113.homepage.HomePage;
 
@@ -28,7 +29,9 @@ public class BudgetPlanner extends javax.swing.JFrame {
         this.username = username;
         
         Connect d = new Connect();
-        ResultSet rs = d.initialize();
+        int uid = d.getUID(username);
+        
+        ResultSet rs = d.initialize(uid);
         
         double accomadation = 0;
         double food = 0;
@@ -64,7 +67,9 @@ public class BudgetPlanner extends javax.swing.JFrame {
             System.err.println("Chart generation failed. Reload");
         }
         
-        // CHART CREATION CODE -------------------------------------------------
+        Chart chart = new Chart(accomadation, food, entertaintment, transport, attraction, total, chartPanel);
+        
+        /*// CHART CREATION CODE -------------------------------------------------
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         dataset.setValue(percentOf(accomadation, total), "Series 1", "Accomodation");
         dataset.setValue(percentOf(food, total), "Series 1", "Food");
@@ -96,7 +101,7 @@ public class BudgetPlanner extends javax.swing.JFrame {
             true,             // include legend   
             true, 
             false);
-        */
+        
         
         ChartPanel chrtPnl = new ChartPanel(chart);
         chrtPnl.setSize(500,500);
@@ -104,6 +109,7 @@ public class BudgetPlanner extends javax.swing.JFrame {
         chartPanel.add(chrtPnl);
         chartPanel.revalidate();
         chartPanel.repaint();
+        */
         
         // LABEL SETTER CODE ---------------------------------------------------
         lblAccomadationValue.setText(String.valueOf(accomadation));
@@ -111,11 +117,9 @@ public class BudgetPlanner extends javax.swing.JFrame {
         lblEntertaintmentValue.setText(String.valueOf(entertaintment));
         lblFoodValue.setText(String.valueOf(food));
         lblTransportValue.setText(String.valueOf(transport));
+        lblTotalValue.setText(String.valueOf(total));
     }
-    
-    private double percentOf(double value, double total) {
-        return value/total*100;
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -128,7 +132,6 @@ public class BudgetPlanner extends javax.swing.JFrame {
 
         panelMain = new javax.swing.JPanel();
         panelMenuButton = new javax.swing.JPanel();
-        btnMenu = new javax.swing.JButton();
         lbFramelName = new javax.swing.JLabel();
         panelData = new javax.swing.JPanel();
         lblAttractions = new javax.swing.JLabel();
@@ -141,20 +144,17 @@ public class BudgetPlanner extends javax.swing.JFrame {
         lblTransportValue = new javax.swing.JLabel();
         lblAccomadationValue = new javax.swing.JLabel();
         lblEntertaintmentValue = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
+        lblTotalValue = new javax.swing.JLabel();
         chartPanel = new javax.swing.JLayeredPane();
+        btnMenu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(300, 100));
 
         panelMain.setBackground(new java.awt.Color(222, 222, 222));
 
         panelMenuButton.setBackground(new java.awt.Color(222, 222, 222));
-
-        btnMenu.setText("Main Menu");
-        btnMenu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMenuActionPerformed(evt);
-            }
-        });
 
         lbFramelName.setFont(new java.awt.Font("Fira Sans", 1, 18)); // NOI18N
         lbFramelName.setForeground(new java.awt.Color(1, 1, 1));
@@ -165,28 +165,20 @@ public class BudgetPlanner extends javax.swing.JFrame {
         panelMenuButtonLayout.setHorizontalGroup(
             panelMenuButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMenuButtonLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(88, 88, 88)
                 .addComponent(lbFramelName)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelMenuButtonLayout.setVerticalGroup(
             panelMenuButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMenuButtonLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelMenuButtonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelMenuButtonLayout.createSequentialGroup()
-                        .addGap(2, 2, 2)
-                        .addComponent(lbFramelName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(panelMenuButtonLayout.createSequentialGroup()
-                        .addComponent(btnMenu)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(14, 14, 14)
+                .addComponent(lbFramelName, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         panelData.setBackground(new java.awt.Color(222, 222, 222));
-        panelData.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Allocated amounts", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(1, 1, 1))); // NOI18N
+        panelData.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Allocated amounts", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(1, 1, 1))); // NOI18N
         panelData.setForeground(new java.awt.Color(1, 1, 1));
 
         lblAttractions.setForeground(new java.awt.Color(1, 1, 1));
@@ -215,76 +207,96 @@ public class BudgetPlanner extends javax.swing.JFrame {
         lblEntertaintment.setToolTipText("");
 
         lblAttractionsValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblAttractionsValue.setForeground(new java.awt.Color(1, 1, 1));
         lblAttractionsValue.setText("jLabel1");
 
         lblFoodValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblFoodValue.setForeground(new java.awt.Color(1, 1, 1));
         lblFoodValue.setText("jLabel1");
 
         lblTransportValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblTransportValue.setForeground(new java.awt.Color(1, 1, 1));
         lblTransportValue.setText("jLabel1");
 
         lblAccomadationValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblAccomadationValue.setForeground(new java.awt.Color(1, 1, 1));
         lblAccomadationValue.setText("jLabel1");
 
         lblEntertaintmentValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblEntertaintmentValue.setForeground(new java.awt.Color(1, 1, 1));
         lblEntertaintmentValue.setText("jLabel1");
+
+        lblTotal.setForeground(new java.awt.Color(1, 1, 1));
+        lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblTotal.setText("Total :");
+        lblTotal.setToolTipText("");
+
+        lblTotalValue.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblTotalValue.setForeground(new java.awt.Color(1, 1, 1));
+        lblTotalValue.setText("jLabel1");
 
         javax.swing.GroupLayout panelDataLayout = new javax.swing.GroupLayout(panelData);
         panelData.setLayout(panelDataLayout);
         panelDataLayout.setHorizontalGroup(
             panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDataLayout.createSequentialGroup()
-                .addGap(0, 18, Short.MAX_VALUE)
+            .addGroup(panelDataLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEntertaintment, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblTransport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblAttractions, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblFood, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lblAccomadation, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDataLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDataLayout.createSequentialGroup()
-                        .addComponent(lblAttractionsValue)
-                        .addGap(113, 113, 113))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDataLayout.createSequentialGroup()
-                        .addComponent(lblFoodValue)
-                        .addGap(112, 112, 112))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDataLayout.createSequentialGroup()
-                        .addComponent(lblTransportValue)
-                        .addGap(113, 113, 113))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDataLayout.createSequentialGroup()
-                        .addComponent(lblAccomadationValue)
-                        .addGap(113, 113, 113))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelDataLayout.createSequentialGroup()
-                        .addComponent(lblEntertaintmentValue)
-                        .addGap(111, 111, 111))))
+                    .addGroup(panelDataLayout.createSequentialGroup()
+                        .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lblEntertaintment, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(panelDataLayout.createSequentialGroup()
+                                    .addGap(45, 45, 45)
+                                    .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(33, 33, 33)
+                                    .addComponent(lblTotalValue))
+                                .addComponent(lblAccomadation, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panelDataLayout.createSequentialGroup()
+                        .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblAttractions, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lblTransport, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblFood, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelDataLayout.createSequentialGroup()
+                                .addGap(81, 81, 81)
+                                .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblEntertaintmentValue)
+                                    .addComponent(lblTransportValue)
+                                    .addComponent(lblFoodValue)
+                                    .addComponent(lblAccomadationValue)
+                                    .addComponent(lblAttractionsValue))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         panelDataLayout.setVerticalGroup(
             panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelDataLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addContainerGap()
                 .addComponent(lblAttractions)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblAttractionsValue)
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblFood)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblFoodValue)
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblTransport)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblTransportValue)
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblAccomadation)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblAccomadationValue)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblEntertaintment)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblEntertaintmentValue)
-                .addGap(23, 23, 23))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGroup(panelDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTotal)
+                    .addComponent(lblTotalValue))
+                .addContainerGap())
         );
 
         chartPanel.setBackground(new java.awt.Color(222, 222, 222));
@@ -294,12 +306,19 @@ public class BudgetPlanner extends javax.swing.JFrame {
         chartPanel.setLayout(chartPanelLayout);
         chartPanelLayout.setHorizontalGroup(
             chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGap(0, 512, Short.MAX_VALUE)
         );
         chartPanelLayout.setVerticalGroup(
             chartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
+
+        btnMenu.setText("Main Menu");
+        btnMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMenuActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelMainLayout = new javax.swing.GroupLayout(panelMain);
         panelMain.setLayout(panelMainLayout);
@@ -309,9 +328,15 @@ public class BudgetPlanner extends javax.swing.JFrame {
                 .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelMenuButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panelMainLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(panelData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelMainLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(panelData, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelMainLayout.createSequentialGroup()
+                                .addGap(85, 85, 85)
+                                .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(chartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panelMainLayout.setVerticalGroup(
@@ -319,11 +344,11 @@ public class BudgetPlanner extends javax.swing.JFrame {
             .addGroup(panelMainLayout.createSequentialGroup()
                 .addComponent(panelMenuButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(panelMainLayout.createSequentialGroup()
-                .addComponent(chartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addComponent(panelData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnMenu)
+                .addContainerGap(17, Short.MAX_VALUE))
+            .addComponent(chartPanel)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -334,7 +359,7 @@ public class BudgetPlanner extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelMain, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(panelMain, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -391,6 +416,8 @@ public class BudgetPlanner extends javax.swing.JFrame {
     private javax.swing.JLabel lblEntertaintmentValue;
     private javax.swing.JLabel lblFood;
     private javax.swing.JLabel lblFoodValue;
+    private javax.swing.JLabel lblTotal;
+    private javax.swing.JLabel lblTotalValue;
     private javax.swing.JLabel lblTransport;
     private javax.swing.JLabel lblTransportValue;
     private javax.swing.JPanel panelData;

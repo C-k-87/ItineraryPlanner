@@ -14,22 +14,20 @@ import org.jfree.chart.plot.*;
 import org.jfree.data.category.*;
 
 public class Chart extends JFrame {
-    public JFreeChart chart;
-    public ChartPanel chartPan;
-    public JPanel panel;
-    
-    public Chart() {
-        // Create dataset
+    private static int x = 512, y = 512;
+    public Chart(double accomadation, double food, double entertaintment, double transport, double attraction, double total, JLayeredPane chartPanel) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.setValue(10, "Series 1", "Category 1");
-        dataset.setValue(20, "Series 1", "Category 2");
-        dataset.setValue(30, "Series 1", "Category 3");
+        dataset.setValue(percentOf(accomadation, total), "Series 1", "Accomodation");
+        dataset.setValue(percentOf(food, total), "Series 1", "Food");
+        dataset.setValue(percentOf(entertaintment, total), "Series 1", "Entertaintment");
+        dataset.setValue(percentOf(transport, total), "Series 1", "Transport");
+        dataset.setValue(percentOf(attraction, total), "Series 1", "Attraction");
 
         // Create chart
-        chart = ChartFactory.createBarChart(
-            "My Chart",
-            "Category",
-            "Value",
+        JFreeChart chart = ChartFactory.createBarChart(
+            "",
+            "",
+            "",
             dataset,
             PlotOrientation.VERTICAL,
             false,
@@ -37,22 +35,16 @@ public class Chart extends JFrame {
             false
         );
 
-        // Create chart panel and add it to a JPanel
-        chartPan = new ChartPanel(chart);
-        panel = new JPanel();
-        panel.add(chartPan);
-
-        // Add JPanel to JFrame
-        add(panel);
-
-        // Set size and visibility of JFrame
-        setSize(500, 500);
-        setVisible(true);
+        ChartPanel chrtPnl = new ChartPanel(chart);
+        chrtPnl.setSize(x,y);
+        chrtPnl.setVisible(true);
+        chartPanel.add(chrtPnl);
+        chartPanel.revalidate();
+        chartPanel.repaint();
     }
-
-    public static void main(String[] args) {
-        new Chart();
+    
+    private double percentOf(double value, double total) {
+        return value/total*100;
     }
-
 }
 

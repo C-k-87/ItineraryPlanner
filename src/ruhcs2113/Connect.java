@@ -16,19 +16,20 @@ import java.sql.ResultSet;
 
 
 public class Connect {
-    public void addTask(int id,String title, String description, double budget, String category) {       
+    public void addTask(int id, int uid, String title, String description, double budget, String category) {       
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/itinerary_planner", "root", "");
                       
-            String addStatement = ("INSERT INTO tasks VALUES(?,?,?,?,?)");
+            String addStatement = ("INSERT INTO tasks VALUES(?,?,?,?,?,?)");
             PreparedStatement ptst = con.prepareStatement(addStatement);
             
             ptst.setString(1, String.valueOf(id));
-            ptst.setString(2, title);
-            ptst.setString(3, description);
-            ptst.setString(4, String.valueOf(budget));
-            ptst.setString(5, category);
+            ptst.setString(2, String.valueOf(uid));            
+            ptst.setString(3, title);
+            ptst.setString(4, description);
+            ptst.setString(5, String.valueOf(budget));
+            ptst.setString(6, category);
             
             ptst.executeUpdate();
             System.out.println("Success");
@@ -39,15 +40,16 @@ public class Connect {
         }
     }
     
-    public void removeTask(int row) {
+    public void removeTask(int row,int uid) {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/itinerary_planner", "root", "");
             
-            String removeStatement = ("DELETE FROM tasks WHERE tasks.task_id = ?");
+            String removeStatement = ("DELETE FROM tasks WHERE tasks.task_id = ? AND tasks.uid = ?");
             PreparedStatement ptst = con.prepareStatement(removeStatement);
             
             ptst.setString(1, String.valueOf(row));
+            ptst.setString(2, String.valueOf(uid));
             ptst.executeUpdate();
             
             System.out.println("Success");
@@ -58,13 +60,14 @@ public class Connect {
         }
     }
     
-    public ResultSet initialize() {
+    public ResultSet initialize(int uid) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/itinerary_planner", "root", "");
             
-            Statement st = con.createStatement();
-            String query = "SELECT * FROM tasks";
+            String query = "SELECT * FROM tasks WHERE uid = '"+uid+"'";
+            
+            Statement st = con.createStatement();  
             
             ResultSet rs = st.executeQuery(query);         
             
@@ -78,5 +81,27 @@ public class Connect {
         }
         System.err.println("FATAL: Couldn't initialize table");
         return null;
+    }
+    
+    public int getUID(String username) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/itinerary_planner", "root", "");
+            
+            String query = ("SELECT uid FROM tourist WHERE uname ='"+username+"'");
+            
+            Statement st = con.createStatement();    
+            
+            ResultSet rs = st.executeQuery(query); 
+            rs.next();
+            int uid = rs.getInt("uid");
+            
+            return uid;
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.out.println("Error. Retrieval failed.");
+            return -1;
+        }
     }
 }

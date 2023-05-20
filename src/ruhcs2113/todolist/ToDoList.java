@@ -17,7 +17,7 @@ import ruhcs2113.homepage.HomePage;
 public class ToDoList extends javax.swing.JFrame {
 
     DefaultTableModel model;
-    public int IDCounter;
+    public int IDCounter,uid;
     private static String username;
     
     public ToDoList(String username) {
@@ -28,7 +28,10 @@ public class ToDoList extends javax.swing.JFrame {
         model = (DefaultTableModel) tableTaskTable.getModel();
         
         Connect d = new Connect();
-        ResultSet rs = d.initialize();
+        
+        uid = d.getUID(username);
+        
+        ResultSet rs = d.initialize(uid);
         
         try {
             while(rs.next()) {
@@ -80,6 +83,7 @@ public class ToDoList extends javax.swing.JFrame {
         btnTaskDone = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(300, 100));
 
         panelContainer.setBackground(new java.awt.Color(254, 254, 254));
 
@@ -288,7 +292,7 @@ public class ToDoList extends javax.swing.JFrame {
             
             txtTaskStatus.setText("Removed");
             
-            d.removeTask(removeID);
+            d.removeTask(removeID,uid);
         }
     }
     
@@ -308,7 +312,7 @@ public class ToDoList extends javax.swing.JFrame {
             
             txtTaskStatus.setText("Added");
             
-            d.addTask(id ,title, description, budgetValue, (String)category);
+            d.addTask(id , uid, title, description, budgetValue, (String)category);
             IDCounter++;
             
         }catch (NumberFormatException e) {

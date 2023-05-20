@@ -23,6 +23,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import ruhcs2113.Connect;
 import ruhcs2113.budgetplanner.BudgetPlanner;
+import ruhcs2113.login.SignIn;
 import ruhcs2113.todolist.ToDoList;
 
 /**
@@ -45,7 +46,10 @@ public class HomePage extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tableTaskTable.getModel();
         
         Connect d = new Connect();
-        ResultSet rs = d.initialize();
+        
+        int uid = d.getUID(username);
+        
+        ResultSet rs = d.initialize(uid);
         
         try {
             while(rs.next()) {
@@ -90,6 +94,7 @@ public class HomePage extends javax.swing.JFrame {
         jLabel2.setText("jLabel2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setLocation(new java.awt.Point(300, 150));
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 51));
 
@@ -378,7 +383,7 @@ public class HomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/iternary", "root", "");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/itinerary_planner", "root", "");
             String sql ="SELECT * FROM photo where userName = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1,username);
@@ -548,21 +553,22 @@ public class HomePage extends javax.swing.JFrame {
     private void editText1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editText1MouseClicked
         // TODO add your handling code here:
         dispose();
+        SignIn sgnIn = new SignIn();
+        sgnIn.setVisible(true);
     }//GEN-LAST:event_editText1MouseClicked
 
     private void changeUserTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changeUserTextMouseClicked
-        // TODO add your handling code here
         String newUsername = JOptionPane.showInputDialog(this,"Enter your new user name : ");
         
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/iternary", "root", "");
-            PreparedStatement pst = con1.prepareStatement("UPDATE tourist SET userName=? where username = ");
-            pst.setString(1, username);
-            //pst.executeUpdate();
+            Connection con1 = DriverManager.getConnection("jdbc:mysql://localhost:3306/itinerary_planner", "root", "");
+            PreparedStatement pst = con1.prepareStatement("UPDATE tourist SET uname=? where uname=?");
+            pst.setString(1, newUsername);
+            pst.setString(2, username);
+            pst.executeUpdate();
 
-            user.setText(" User : " +username);
-            //SSystem.out.println(username);
+            user.setText(" User : " +newUsername);
 
         }catch(Exception e){
             System.out.println(e);
