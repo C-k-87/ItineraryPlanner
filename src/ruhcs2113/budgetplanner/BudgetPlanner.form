@@ -39,7 +39,7 @@
     <Container class="javax.swing.JPanel" name="panelMain">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="de" green="de" red="de" type="rgb"/>
+          <Color blue="4b" green="2c" red="28" type="rgb"/>
         </Property>
       </Properties>
 
@@ -86,7 +86,7 @@
         <Container class="javax.swing.JPanel" name="panelMenuButton">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="de" green="de" red="de" type="rgb"/>
+              <Color blue="3c" green="1f" red="1a" type="rgb"/>
             </Property>
           </Properties>
 
@@ -113,11 +113,14 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="lbFramelName">
               <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
+                </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Fira Sans" size="18" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="BUDGET PLANNER"/>
               </Properties>
@@ -127,12 +130,12 @@
         <Container class="javax.swing.JPanel" name="panelData">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="de" green="de" red="de" type="rgb"/>
+              <Color blue="4b" green="2c" red="28" type="rgb"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
                 <TitledBorder title="Allocated amounts">
-                  <Color PropertyName="color" blue="1" green="1" red="1" type="rgb"/>
+                  <Color PropertyName="color" blue="fe" green="fe" red="fe" type="rgb"/>
                 </TitledBorder>
               </Border>
             </Property>
@@ -223,7 +226,7 @@
             <Component class="javax.swing.JLabel" name="lblAttractions">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Attractions"/>
@@ -233,7 +236,7 @@
             <Component class="javax.swing.JLabel" name="lblFood">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Food"/>
@@ -243,7 +246,7 @@
             <Component class="javax.swing.JLabel" name="lblTransport">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Transport"/>
@@ -253,7 +256,7 @@
             <Component class="javax.swing.JLabel" name="lblAccomadation">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Accomodation"/>
@@ -263,7 +266,7 @@
             <Component class="javax.swing.JLabel" name="lblEntertaintment">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Entertaintment"/>
@@ -276,7 +279,7 @@
                   <Font name="Tahoma" size="18" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="jLabel1"/>
               </Properties>
@@ -287,7 +290,7 @@
                   <Font name="Tahoma" size="18" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="jLabel1"/>
               </Properties>
@@ -298,7 +301,7 @@
                   <Font name="Tahoma" size="18" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="jLabel1"/>
               </Properties>
@@ -309,7 +312,7 @@
                   <Font name="Tahoma" size="18" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="jLabel1"/>
               </Properties>
@@ -320,7 +323,7 @@
                   <Font name="Tahoma" size="18" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="jLabel1"/>
               </Properties>
@@ -328,7 +331,7 @@
             <Component class="javax.swing.JLabel" name="lblTotal">
               <Properties>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
                 <Property name="text" type="java.lang.String" value="Total :"/>
@@ -341,7 +344,7 @@
                   <Font name="Tahoma" size="18" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="1" green="1" red="1" type="rgb"/>
+                  <Color blue="fe" green="fe" red="fe" type="rgb"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="jLabel1"/>
               </Properties>
@@ -376,6 +379,9 @@
         </Container>
         <Component class="javax.swing.JButton" name="btnMenu">
           <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="66" green="66" red="0" type="rgb"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Main Menu"/>
           </Properties>
           <Events>

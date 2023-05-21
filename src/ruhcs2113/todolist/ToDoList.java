@@ -85,21 +85,32 @@ public class ToDoList extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setLocation(new java.awt.Point(300, 100));
 
-        panelContainer.setBackground(new java.awt.Color(254, 254, 254));
+        panelContainer.setBackground(new java.awt.Color(39, 44, 75));
 
-        panelAddTask.setBackground(new java.awt.Color(171, 171, 171));
-        panelAddTask.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Insert Task", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 0, 12), new java.awt.Color(1, 1, 1))); // NOI18N
+        panelAddTask.setBackground(new java.awt.Color(26, 31, 60));
+        panelAddTask.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "INSERT TASK", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Dialog", 1, 18), new java.awt.Color(254, 254, 254))); // NOI18N
         panelAddTask.setOpaque(false);
 
-        labelTaskTitle.setForeground(new java.awt.Color(1, 1, 1));
+        labelTaskTitle.setForeground(new java.awt.Color(254, 254, 254));
         labelTaskTitle.setText("Title");
 
-        labelTaskDescription.setForeground(new java.awt.Color(1, 1, 1));
+        fieldTaskTitle.setBackground(new java.awt.Color(234, 234, 234));
+        fieldTaskTitle.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102)));
+        fieldTaskTitle.setOpaque(true);
+
+        labelTaskDescription.setForeground(new java.awt.Color(254, 254, 254));
         labelTaskDescription.setText("Description");
 
-        labelTaskBudget.setForeground(new java.awt.Color(1, 1, 1));
+        fieldTaskDescription.setBackground(new java.awt.Color(234, 234, 234));
+        fieldTaskDescription.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102)));
+
+        labelTaskBudget.setForeground(new java.awt.Color(254, 254, 254));
         labelTaskBudget.setText("Budget");
 
+        fieldTaskBudget.setBackground(new java.awt.Color(234, 234, 234));
+        fieldTaskBudget.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102)));
+
+        btnTaskAdd.setBackground(new java.awt.Color(0, 102, 102));
         btnTaskAdd.setText("Add");
         btnTaskAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,6 +118,7 @@ public class ToDoList extends javax.swing.JFrame {
             }
         });
 
+        btnTaskClear.setBackground(new java.awt.Color(0, 102, 102));
         btnTaskClear.setText("Clear");
         btnTaskClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,20 +126,23 @@ public class ToDoList extends javax.swing.JFrame {
             }
         });
 
-        txtTaskStatus.setForeground(new java.awt.Color(1, 1, 1));
+        txtTaskStatus.setForeground(new java.awt.Color(254, 254, 254));
         txtTaskStatus.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtTaskStatus.setText("Enter task");
 
-        labelTaskCategory.setForeground(new java.awt.Color(1, 1, 1));
+        labelTaskCategory.setForeground(new java.awt.Color(254, 254, 254));
         labelTaskCategory.setText("Category");
 
+        fieldTaskCategory.setBackground(new java.awt.Color(164, 164, 164));
         fieldTaskCategory.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Attraction", "Entertaintment", "Food", "Accommodation", "Transport" }));
+        fieldTaskCategory.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         fieldTaskCategory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fieldTaskCategoryActionPerformed(evt);
             }
         });
 
+        btnMenu.setBackground(new java.awt.Color(0, 102, 102));
         btnMenu.setText("Main Menu");
         btnMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,14 +179,14 @@ public class ToDoList extends javax.swing.JFrame {
                                 .addGap(26, 26, 26)
                                 .addComponent(labelTaskBudget))
                             .addGroup(panelAddTaskLayout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addComponent(btnTaskAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(55, 55, 55)
-                                .addComponent(btnTaskClear, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelAddTaskLayout.createSequentialGroup()
                                 .addGap(101, 101, 101)
-                                .addComponent(txtTaskStatus)))
-                        .addGap(0, 44, Short.MAX_VALUE)))
+                                .addComponent(txtTaskStatus))
+                            .addGroup(panelAddTaskLayout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addComponent(btnTaskAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(47, 47, 47)
+                                .addComponent(btnTaskClear, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 35, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(panelAddTaskLayout.createSequentialGroup()
                 .addGap(77, 77, 77)
@@ -208,7 +223,7 @@ public class ToDoList extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tableTaskTable.setBackground(new java.awt.Color(145, 145, 145));
+        tableTaskTable.setBackground(new java.awt.Color(254, 254, 254));
         tableTaskTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -225,11 +240,13 @@ public class ToDoList extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tableTaskTable.setOpaque(false);
         panelTable.setViewportView(tableTaskTable);
         if (tableTaskTable.getColumnModel().getColumnCount() > 0) {
             tableTaskTable.getColumnModel().getColumn(0).setResizable(false);
         }
 
+        btnTaskDone.setBackground(new java.awt.Color(0, 102, 102));
         btnTaskDone.setText("Mark Done");
         btnTaskDone.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -363,13 +380,6 @@ public class ToDoList extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ToDoList.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

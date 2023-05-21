@@ -454,7 +454,7 @@ public class HomePage extends javax.swing.JFrame {
                 FileInputStream fis = null;
                 try{
                     Class.forName("com.mysql.cj.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/iternary", "root", "");
+                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/itinerary_planner", "root", "");
                     fis = new FileInputStream(path);
 //                    PreparedStatement pst = con.prepareStatement("INSERT INTO photo(userName,image) values(?,?)");
                     PreparedStatement pst = con.prepareStatement("UPDATE photo SET userName=?,image=?");
