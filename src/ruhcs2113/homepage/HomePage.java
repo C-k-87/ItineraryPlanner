@@ -456,8 +456,8 @@ public class HomePage extends javax.swing.JFrame {
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/itinerary_planner", "root", "");
                     fis = new FileInputStream(path);
-//                    PreparedStatement pst = con.prepareStatement("INSERT INTO photo(userName,image) values(?,?)");
-                    PreparedStatement pst = con.prepareStatement("UPDATE photo SET userName=?,image=?");
+                    PreparedStatement pst = con.prepareStatement("INSERT INTO photo(userName,image) values(?,?)");
+//                    PreparedStatement pst = con.prepareStatement("UPDATE photo SET userName=?,image=?");
                     pst.setString(1, username);
                     pst.setBinaryStream(2,fis);
                     int response = JOptionPane.showConfirmDialog(rootPane,"Are you sure to save Image","Confirm...",JOptionPane.YES_NO_OPTION);

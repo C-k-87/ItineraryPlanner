@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 21, 2023 at 03:55 AM
+-- Generation Time: May 25, 2023 at 05:04 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -28,8 +28,8 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `photo` (
-  `username` int(50) NOT NULL,
-  `image` varchar(100) NOT NULL
+  `userName` varchar(50) NOT NULL,
+  `image` mediumblob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
@@ -57,10 +57,11 @@ INSERT INTO `tasks` (`task_id`, `uid`, `title`, `description`, `budget`, `catego
 (2, 1, 'task2', 'desc', 100, 'Entertaintment'),
 (2, 2, 'u2task2', 'desc', 300, 'Food'),
 (3, 1, 'task3', 'desc', 50, 'Food'),
-(3, 2, 'u2task3', 'desc', 700, 'Accommodation'),
 (4, 1, 'task4', 'desc', 200, 'Accommodation'),
 (4, 2, 'u2task4', 'desc', 1500, 'Transport'),
-(5, 1, 'task5', 'desc', 400, 'Transport');
+(5, 1, 'task5', 'desc', 400, 'Transport'),
+(5, 2, 'u2task5', 'desc', 450, 'Attraction'),
+(6, 1, 'mdf', 'lkjasslk', 1230, 'Attraction');
 
 -- --------------------------------------------------------
 
